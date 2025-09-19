@@ -12,15 +12,22 @@ jobs:
     permissions:
       contents: read
       pages: write
-      id-token: write   # <--- obligatoire pour deploy-pages@v4
+      id-token: write
+
+    environment:
+      name: github-pages
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Inject config.js with secret
+      - name: Inject config.js with secrets
         run: |
-          echo "window.CONFIG = { pass: '${{ secrets.PASS }}' };" > config.js
+          echo "window.CONFIG = {" > config.js
+          echo "  pass: '${{ secrets.PASS }}'," >> config.js
+          echo "  renderUrl: '${{ secrets.RENDER_URL }}'," >> config.js
+          echo "  serverName: '${{ secrets.SERVER_NAME }}'" >> config.js
+          echo "};" >> config.js
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
