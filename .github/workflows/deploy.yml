@@ -3,11 +3,16 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Change si tu déploies depuis une autre branche
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write   # <--- obligatoire pour deploy-pages@v4
 
     steps:
       - name: Checkout
